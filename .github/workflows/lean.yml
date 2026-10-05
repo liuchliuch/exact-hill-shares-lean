@@ -1,0 +1,71 @@
+name: Lean checks
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    name: Complete proof library
+    runs-on: ubuntu-24.04
+    timeout-minutes: 240
+    env:
+      LEAN_NUM_THREADS: 2
+      PYTHONDONTWRITEBYTECODE: 1
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: leanprover/lean-action@50fcf42d2e460296f1a34b402e990d1b24f8b596 # v1
+        with:
+          auto-config: false
+          build: false
+          test: false
+          lint: false
+          use-mathlib-cache: true
+      - name: Rebuild, audit and run regressions
+        run: python3 scripts/verify.py > .lake/publication-ci.log 2>&1
+      - name: Retain proof verification evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          include-hidden-files: true
+          name: proof-verification
+          path: |
+            .lake/publication-ci.log
+            .lake/publication-results/
+  comparator:
+    name: Official Comparator
+    runs-on: ubuntu-24.04
+    timeout-minutes: 350
+    env:
+      LEAN_NUM_THREADS: 2
+      PYTHONDONTWRITEBYTECODE: 1
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: leanprover/lean-action@50fcf42d2e460296f1a34b402e990d1b24f8b596 # v1
+        with:
+          auto-config: false
+          build: false
+          test: false
+          lint: false
+          use-mathlib-cache: true
+      - uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5
+        with:
+          go-version: '1.24.x'
+          cache: false
+      - name: Install pinned sandbox and start user systemd
+        run: |
+          go install github.com/zouuup/landrun/cmd/landrun@811cfff51ceaf3d9843708aa6d22e9b84ccac8b4
+          sudo loginctl enable-linger "$USER"
+          sudo systemctl start "user@$(id -u).service"
+          echo "XDG_RUNTIME_DIR=/run/user/$(id -u)" >> "$GITHUB_ENV"
+          echo "DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u)/bus" >> "$GITHUB_ENV"
+      - name: Compare statements, replay kernel and reject controls
+        run: python3 scripts/comparator-ci.py
+      - name: Retain Comparator evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          include-hidden-files: true
+          name: official-comparator
+          path: .lake/comparator-results/

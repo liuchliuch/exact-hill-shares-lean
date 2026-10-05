@@ -5,7 +5,7 @@ set -euo pipefail
 ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 cd "$ROOT"
 if [[ -n ${LEAN_HOME:-} ]]; then export PATH="$LEAN_HOME/bin:$PATH"; fi
-command -v lake >/dev/null || { echo 'Use elan or scripts/with-toolchain.sh.' >&2; exit 2; }
+command -v lake >/dev/null || { echo 'Install elan and the pinned Lean toolchain.' >&2; exit 2; }
 MODE=(--safe-declarations)
 if [[ ${1:-} == --replay-all ]]; then MODE+=(--replay-all); shift; fi
 if [[ $# != 0 ]]; then echo 'Usage: scripts/validate.sh [--replay-all]' >&2; exit 2; fi

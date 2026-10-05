@@ -1,0 +1,20 @@
+{
+  "challenge_module": "Challenge.Expected",
+  "solution_module": "Solution.Proofs",
+  "theorem_names": [
+    "PaperContract.exact_share_formula",
+    "PaperContract.simultaneous_guarantee",
+    "PaperContract.ordered_tail_domination",
+    "PaperContract.feasible_interval_width",
+    "PaperContract.rational_allocator_correct"
+  ],
+  "definition_names": [
+    "PaperContract.allocate"
+  ],
+  "permitted_axioms": [
+    "propext",
+    "Quot.sound",
+    "Classical.choice"
+  ],
+  "enable_nanoda": false
+}

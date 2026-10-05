@@ -1,0 +1,8 @@
+{
+  "lean": "4.19.0",
+  "comparator": {"url": "https://github.com/leanprover/comparator.git", "rev": "97ef939c9fe3f8abf93e4adb654517476da7a66f", "branch_context": "pre-v25: v4.24.0 and older"},
+  "lean4export": {"url": "https://github.com/leanprover/lean4export.git", "rev": "bae5a4a9c1cddec1fd97a82907cb5be9da884b2d", "tag": "v4.19.0"},
+  "lean4checker": {"url": "https://github.com/leanprover/lean4checker.git", "rev": "e11f65c651edd58d68ba260015d2bfde5102cd7f", "tag": "v4.19.0"},
+  "trusted_local_helper": {"repository": "comparator", "rev": "6b766e374042541622b12509f3291035f35e4038", "path": "scripts/fake-landrun.sh", "sha256": "167507c89d8b3c7667ad78b50df7b19f89883751a01efd1457404fa34a994e8b"},
+  "landrun": {"url": "https://github.com/Zouuup/landrun.git", "rev": "811cfff51ceaf3d9843708aa6d22e9b84ccac8b4"}
+}

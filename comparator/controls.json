@@ -1,0 +1,11 @@
+{
+  "description": "Controlled tiny projects; each expected and candidate module is independently compiled and exported by the official comparator.",
+  "challenge": "namespace ComparatorControl\ndef threshold : Nat := 1\ntheorem target : threshold = threshold := by sorry\nend ComparatorControl\n",
+  "cases": [
+    {"name": "matching", "accept": true, "source": "namespace ComparatorControl\ndef threshold : Nat := 1\ntheorem target : threshold = threshold := rfl\nend ComparatorControl\n"},
+    {"name": "statement-mismatch", "accept": false, "diagnostic": "Challenge and solution theorem statement do not match", "source": "namespace ComparatorControl\ndef threshold : Nat := 1\ntheorem target : threshold = threshold ∧ True := ⟨rfl, True.intro⟩\nend ComparatorControl\n"},
+    {"name": "definition-mismatch", "accept": false, "diagnostic": "Const does not match between challenge and target 'ComparatorControl.threshold'", "source": "namespace ComparatorControl\ndef threshold : Nat := 2\ntheorem target : threshold = threshold := rfl\nend ComparatorControl\n"},
+    {"name": "forbidden-axiom", "accept": false, "diagnostic": "Illegal axiom detected: 'ComparatorControl.forbidden'", "source": "namespace ComparatorControl\ndef threshold : Nat := 1\naxiom forbidden : threshold = threshold\ntheorem target : threshold = threshold := forbidden\nend ComparatorControl\n"},
+    {"name": "admitted-proof", "accept": false, "diagnostic": "Illegal axiom detected: 'sorryAx'", "source": "namespace ComparatorControl\ndef threshold : Nat := 1\ntheorem target : threshold = threshold := by sorry\nend ComparatorControl\n"}
+  ]
+}

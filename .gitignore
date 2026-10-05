@@ -1,0 +1,10 @@
+.lake/
+.cache/
+.build/
+.toolchain/
+build/
+evidence/
+__pycache__/
+*.pyc
+*.zip
+.DS_Store
